@@ -55,17 +55,19 @@ void addExclusiveFields(PoliceStationFields & psFields, const GridMap & gridMap)
     for (auto it = gridMap.begin(); it != gridMap.end(); it = gridMap.upper_bound(it->first))
     {
 	const auto coord = it->first;
-	if (gridMap.count(coord) == 1)
+	if (gridMap.count(coord) != 1)
 	{
-	    const auto ps = gridMap.find(coord)->second;
-	    psFields.emplace(std::make_pair(ps, coord));
+	    continue;
 	}
 
+	const auto ps = gridMap.find(coord)->second;
+	psFields.emplace(std::make_pair(ps, coord));
     }
 }
 
 void balanceSharedFields(PoliceStationFields & psFields, const GridMap & gridMap)
 {
+    // NOTE: iterate over unique keys of gridMap
     for (auto it = gridMap.begin(); it != gridMap.end(); it = gridMap.upper_bound(it->first))
     {
 	const auto coord = it->first;
