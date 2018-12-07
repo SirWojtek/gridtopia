@@ -14,7 +14,7 @@ gridtopia::Testcase parseTestcase(std::ifstream & fileStream)
 
     for (unsigned i = 0; i < policeStationsCount; ++i) {
         unsigned x, y, d;
-        fileStream >> x >> y >> d;
+        fileStream >> y >> x >> d;
 
         gridtopia::PoliceStation ps = {
             .position = std::make_pair(x, y),

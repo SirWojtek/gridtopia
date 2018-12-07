@@ -36,9 +36,9 @@ GridMap createGridMap(const Testcase & testcase)
 	const auto yBegin = oneIfLess(it->position.second - it->range);
 	const auto yEnd = boundIfMore(it->position.second + it->range, testcase.rows);
 
-	for (auto x = xBegin; x < xEnd; ++x)
+	for (auto x = xBegin; x <= xEnd; ++x)
 	{
-	    for (auto y = yBegin; y < yEnd; ++y)
+	    for (auto y = yBegin; y <= yEnd; ++y)
 	    {
 		const auto coord = std::make_pair(x, y);
 		gridMap.emplace(coord, *it);
