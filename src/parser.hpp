@@ -1,5 +1,5 @@
 
 #include <string>
-#include "model/testcase.hpp"
+#include "gridtopia/testcase.hpp"
 
 std::vector<gridtopia::Testcase> parseInputFile(std::string filename);
