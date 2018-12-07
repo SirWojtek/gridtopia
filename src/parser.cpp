@@ -13,9 +13,15 @@ gridtopia::Testcase parseTestcase(std::ifstream & fileStream)
     fileStream >> testcase.rows >> testcase.columns >> policeStationsCount;
 
     for (unsigned i = 0; i < policeStationsCount; ++i) {
-        unsigned x, y;
-        fileStream >> x >> y;
-        testcase.policeStations.push_back(std::make_pair(x, y));
+        unsigned x, y, d;
+        fileStream >> x >> y >> d;
+
+        gridtopia::PoliceStation ps = {
+            .position = std::make_pair(x, y),
+            .range = d
+        };
+
+        testcase.policeStations.emplace_back(ps);
     }
 
     return testcase;
