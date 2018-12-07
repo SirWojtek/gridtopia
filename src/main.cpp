@@ -8,6 +8,7 @@
 #include <boost/program_options/parsers.hpp>
 
 #include "parser.hpp"
+#include "gridtopia/gridtopia.hpp"
 
 std::string parseCommandLine(int argc, char** argv)
 {
@@ -35,6 +36,11 @@ int main(int argc, char** argv)
     {
         const auto inputFilename = parseCommandLine(argc, argv);
         const auto testcases = parseInputFile(inputFilename);
+        const auto differences = gridtopia::computeSmallestDifference(testcases);
+
+        for (unsigned i = 0; i < differences.size(); ++i) {
+            std::cout << "Case #" <<  i + 1 << ": " << differences[i] << std::endl;
+        }
 
         return 0;
     }

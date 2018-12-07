@@ -2,6 +2,9 @@
 
 #include "parser.hpp"
 
+namespace
+{
+
 gridtopia::Testcase parseTestcase(std::ifstream & fileStream)
 {
     gridtopia::Testcase testcase;
@@ -16,6 +19,8 @@ gridtopia::Testcase parseTestcase(std::ifstream & fileStream)
     }
 
     return testcase;
+}
+
 }
 
 std::vector<gridtopia::Testcase> parseInputFile(std::string filename)
