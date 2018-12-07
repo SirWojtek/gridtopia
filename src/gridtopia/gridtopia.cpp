@@ -66,23 +66,25 @@ void addExclusiveFields(PoliceStationFields & psFields, const GridMap & gridMap)
 
 void balanceSharedFields(PoliceStationFields & psFields, const GridMap & gridMap)
 {
-    for (auto it = gridMap.begin(); it != gridMap.end(); it++)
+    for (auto it = gridMap.begin(); it != gridMap.end(); it = gridMap.upper_bound(it->first))
     {
 	const auto coord = it->first;
-	if (gridMap.count(coord) > 1)
+	if (gridMap.count(coord) < 2)
 	{
-	    const auto valuesRange = gridMap.equal_range(coord);
-
-	    const PoliceStation * min = &valuesRange.first->second;
-	    for (auto psIt = valuesRange.first; psIt != valuesRange.second; psIt++)
-	    {
-		if (psFields.count(*min) > psFields.count(psIt->second))
-		{
-		    min = &psIt->second;
-		}
-	    }
-	    psFields.emplace(*min, coord);
+	    continue;
 	}
+
+	const auto valuesRange = gridMap.equal_range(coord);
+
+	const PoliceStation * min = &valuesRange.first->second;
+	for (auto psIt = valuesRange.first; psIt != valuesRange.second; psIt++)
+	{
+	    if (psFields.count(*min) > psFields.count(psIt->second))
+	    {
+		min = &psIt->second;
+	    }
+	}
+	psFields.emplace(*min, coord);
     }
 }
 
@@ -108,13 +110,11 @@ unsigned computeSmallestDifference(const Testcase & testcase)
     balanceSharedFields(psFields, gridMap);
 
     const auto countVector = countPoliceStationAssignedFields(psFields);
-    const auto minCount = std::min(countVector.begin(), countVector.end());
-    const auto maxCount = std::max(countVector.begin(), countVector.end());
+    const auto minCount = std::min_element(countVector.begin(), countVector.end());
+    const auto maxCount = std::max_element(countVector.begin(), countVector.end());
 
     return maxCount - minCount;
 }
-
-
 }
 
 std::vector<unsigned> computeSmallestDifference(const std::vector<Testcase> & testcases)
@@ -128,7 +128,7 @@ std::vector<unsigned> computeSmallestDifference(const std::vector<Testcase> & te
 	    throw std::invalid_argument("Incorrect testcase data");
 	}
 
-	differences.push_back(computeSmallestDifference(*it));
+	differences.emplace_back(computeSmallestDifference(*it));
     }
 
     return differences;
